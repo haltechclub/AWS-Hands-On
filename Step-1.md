@@ -42,8 +42,8 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 
 **「ステップ2:1個のパブリックサブネットを持つVPC」では以下を入力しVPCの作成ボタンを押下**
 
-**VPC名: vpc-ユーザ名(例 vpc-user05 )**  
-**アベイラビリティゾーン: ap-northeast-1d**  
+**VPC名: vpc-ユーザ名(例 vpc-user00 )**  
+**アベイラビリティゾーン: us-east-1d**  
 
 ![vpc-5](./images/step-1/vpc-5.png "VPC5")
 
@@ -55,7 +55,7 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 
 ----
 
-**「VPCダッシュボード」では直下の「VPCでフィルタリング」でユーザ名を入力しフィルタリングしましょう。以下の例ではuser05でフィルタリングしています**
+**「VPCダッシュボード」では直下の「VPCでフィルタリング」でユーザ名を入力しフィルタリングしましょう。以下の例ではuser00でフィルタリングしています**
 
 ![vpc-7](./images/step-1/vpc-7.png "VPC7")
 
@@ -93,9 +93,9 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 
 |-|1 名前タグ|2 VPC|3 アベイラビリティ ゾーン|4 CIDR ブロック|
 |:-|:-|:-|:-|:-|
-|2つ目|パブリックサブネット|自分で作成したVPCを指定|ap-northeast-1c|10.0.1.0/24|
-|3つ目|プライベートサブネット|自分で作成したVPCを指定|ap-northeast-1d|10.0.2.0/24|
-|4つ目|プライベートサブネット|自分で作成したVPCを指定|ap-northeast-1c|10.0.3.0/24|
+|2つ目|パブリックサブネット|自分で作成したVPCを指定|us-east-1c|10.0.1.0/24|
+|3つ目|プライベートサブネット|自分で作成したVPCを指定|us-east-1d|10.0.2.0/24|
+|4つ目|プライベートサブネット|自分で作成したVPCを指定|us-east-1c|10.0.3.0/24|
 
 ![subnet-2](./images/step-1/subnet-2.png "SUBNET2")
 
@@ -127,7 +127,7 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 ![ec2-2](./images/step-1/ec2-2.png "EC22")
 
 ----
-**マイAMIタブ、「1Day-AMI」の選択ボタンを押下**
+**クイックスタートタブ、「Amazon Linux 2 AMI (HVM), SSD Volume Type」の選択ボタンを押下**
 
 ![ec2-3](./images/step-1/ec2-3.png "EC23")
 
@@ -137,7 +137,7 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 ![ec2-4](./images/step-1/ec2-4.png "EC24")
 
 ----
-**ネットワークには自分が作成したVPCを選択、サブネットは10.0.0.0/24(ap-noatheast-1d)のパブリックサブネットを選択、自動割り当てパブリックIPは有効化を選択し、次の手順：ストレージの選択を押下**
+**ネットワークには自分が作成したVPCを選択、サブネットは10.0.0.0/24(us-east-1d)のパブリックサブネットを選択、自動割り当てパブリックIPは有効化を選択し、次の手順：ストレージの選択を押下**
 
 ![ec2-5](./images/step-1/ec2-5.png "EC25")
 
@@ -152,12 +152,12 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 ![ec2-7](./images/step-1/ec2-7.png "EC27")
 
 ----
-**キーに「Name」、値に「webserver#1-ユーザ名 例 webserver#1-user05 」を設定し次の手順：セキュリティグループの設定を押下**
+**キーに「Name」、値に「webserver#1-ユーザ名 例 webserver#1-user00 」を設定し次の手順：セキュリティグループの設定を押下**
 
 ![ec2-8](./images/step-1/ec2-8.png "EC28")
 
 ----
-**新しいセキュリティグループを作成するを選択、セキュリティグループ名は「web-ユーザ名 例 web-user05」を設定、説明も「web-ユーザ名 例 web-user05」を設定し、ルールの追加ボタンを押下**
+**新しいセキュリティグループを作成するを選択、セキュリティグループ名は「web-ユーザ名 例 web-user00」を設定、説明も「web-ユーザ名 例 web-user00」を設定し、ルールの追加ボタンを押下**
 
 ![ec2-9](./images/step-1/ec2-9.png "EC29")
 
@@ -172,17 +172,26 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 ![ec2-11](./images/step-1/ec2-11.png "EC211")
 
 ----
-**EC2サーバにSSH接続する際に使用する秘密鍵を取得します。新しいキーペアの作成を選択、キーペア名は「1day-ユーザ名 例 1day-user05」を設定し、キーペアのダウンロードを押下、ダウンロードが成功したらインスタンスの作成ボタンを押下**
+**EC2サーバにSSH接続する際に使用する秘密鍵を取得します。新しいキーペアの作成を選択、キーペア名は「ユーザ名 例 user00」を設定し、キーペアのダウンロードを押下、ダウンロードが成功したらインスタンスの作成ボタンを押下**
 
 ![ec2-12](./images/step-1/ec2-12.png "EC212")
 
 ----
+
+**私の環境ではエラー画面が表示されました。**
+
+数分後に再試行すると作成できたのでしばらく待ちましょう。  
+
+![ec2-15](./images/step-1/ec2-15.png "EC215")
+
+----
+
 **EC2インスタンスが作成開始されました。インスタンスの表示ボタンを押下**
 
 ![ec2-13](./images/step-1/ec2-13.png "EC213")
 
 ----
-**作成したEC2インスタンスにて赤枠で囲った「パブリックDNS(IPv4)」の値をコピーしましょう。サーバログインのドメイン、サンプルアプリケーションであるWordpressのURLとなります。**
+**作成したEC2インスタンスにて赤枠で囲った「パブリックDNS(IPv4)」の値をコピーしましょう。サーバログインのドメイン、アプリケーションのURLとなります。**
 
 ![ec2-14](./images/step-1/ec2-14.png "EC214")
 
@@ -195,90 +204,146 @@ Step-1ではVPCを作成し、WordpressがインストールされたAMIを用�
 **作成したEC2インスタンスにログインし環境の確認をしましょう。`1day-userXX.pem`は各自が作成した秘密鍵、ec2-XXXXXX.comは「パブリックDNS(IPv4)」の値です。「ec2-user@ip-10-0-0-XX」のプロンプトが返れば成功です**
 
 ```
-$ chmod 600 1day-userXX.pem
-$ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
+$ chmod 600 userXX.pem
+$ ssh -i userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 [ec2-user@ip-10-0-0-65 ~]$
 ```
 
-**MySQLにrootユーザで接続し、所有しているデータベースの確認をしてみましょう**
+## LAMPサーバの構築
 
-**パスワードは`wordpress`**
+**ApacheとMySQLのインストール**
 
 ```
-$ mysql -u root -p
-Enter password:
+$ sudo yum update -y
+$ sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+$ sudo yum install -y httpd mariadb-server
+$ sudo systemctl start httpd
+$ sudo systemctl enable httpd
+```
 
-mysql> show databases;
+自分の`パブリック DNS (IPv4)`にアクセスしてみると、Apacheのテストページが表示される。  
+
+![lamp-1](./images/step-1/lamp-1.png "EC214")
+
+**アクセス権の設定**
+
+```
+$ sudo usermod -a -G apache ec2-user
+$ exit
+```
+
+sshで再接続
+
+```
+$ sudo chown -R ec2-user:apache /var/www
+$ sudo chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \;
+$ find /var/www -type f -exec sudo chmod 0664 {} \;
+```
+
+**PHPの動作確認**
+
+phpinfoファイル作成
+
+```
+$ echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+```
+
+自分の`パブリック DNS (IPv4)/phpinfo.php`にアクセス。  
+
+![lamp-2](./images/step-1/lamp-2.png "EC214")
+
+確認できたら消去しましょう。
+
+```
+$ rm /var/www/html/phpinfo.php
+```
+
+**MariaDB(MySQL)のインストール**
+
+起動と初期設定  
+
+```
+$ sudo systemctl start mariadb
+$ sudo systemctl enable mariadb
+$ sudo mysql_secure_installation
+```
+
+諸々設定します。
+
+```
+Enter current password for root (enter for none):  # エンターキー押下
+Set root password? [Y/n] # エンターキー押下
+New password: # htc と入力
+Remove anonymous users? [Y/n]  # エンターキー押下
+Disallow root login remotely? [Y/n] # エンターキー押下
+Remove test database and access to it? [Y/n] # エンターキー押下
+Reload privilege tables now? [Y/n] # エンターキー押下
+```
+
+ログイン確認
+
+```
+$ mysql -uroot -p
+Enter password: # htc と入力
+```
+
+ログインできたら成功。  
+
+**使用するユーザーとデータベースの作成**
+
+今回はhtcデータベースとhtcユーザーをパスワードhtcで作成する。  
+**これはテスト用です！実運用の場合は危ないのでもっと考えてつけてください！**  
+
+```
+MariaDB [(none)]> CREATE DATABASE htc;
+MariaDB [(none)]> CREATE USER 'htc'@'%' IDENTIFIED BY 'htc';
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON htc.* TO 'htc'@'%';
+
+MariaDB [htc]> exit;
+```
+
+確かめてみる。
+
+```
+$ mysql -uhtc -p
+Enter password: # htc と入力
+
+MariaDB [(none)]> show databases;
 +--------------------+
 | Database           |
 +--------------------+
+| htc                |
 | information_schema |
-| mysql              |
-| performance_schema |
-| test               |
-| wordpress          |
 +--------------------+
-5 rows in set (0.00 sec)
+MariaDB [(none)]> use htc;
+Database changed
+MariaDB [htc]> show tables;
+Empty set (0.00 sec)
+
+MariaDB [htc]> exit;
 ```
+
+これでLAMPサーバが構築できました。
+
+参考URL
+https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ec2-lamp-amazon-linux-2.html
+
+----
+
+## サンプルアプリを動かしてみる
+
+TODO! 
+gitからアプリをcloneしてきてテーブルとサンプルデータSQLを流し込む。  
+実際に動かしてみる！
+
+----
 
 ## Question サーバチェック
 1.このサーバに振られたIPアドレスの確認をしましょう。  
 2.このサーバのデフォルトゲートウェイを確認しましょう。  
 3.このサーバの基本スペック(CPU数、メモリ、DISK容量など)を確認しましょう。
 
-## Wordpressの初期設定
-**「パブリックDNS(IPv4)」の値でブラウザを開きましょう。Wordpressのサイトが開けば作成成功です。初期設定では「日本語」を選択し続けるボタンを押下**
-
-![wordpress-1](./images/step-1/wordpress-1.png "Wordpress1")
-
 ----
-**「さあ、始めましょう」を押下**
 
-![wordpress-2](./images/step-1/wordpress-2.png "Wordpress2")
-
-----
-**データベース名、ユーザ名、パスワードを以下の設定値にしましょう。その他の値はデフォルトのままで問題ありません。設定をしたら送信ボタンを押下**
-
-|項目|設定値|
-|:-|:-|
-|データベース名|wordpress|
-|ユーザ名|admin|
-|パスワード|wordpress|
-|データベースのホスト名|localhost|
-|テーブル接頭辞|wp_|
-
-![wordpress-3](./images/step-1/wordpress-3.png "Wordpress3")
-
-----
-**インストール実行を押下**
-
-![wordpress-4](./images/step-1/wordpress-4.png "Wordpress4")
-
-----
-**サイトのタイトル、ユーザ名、パスワード、メールアドレスを設定しましょう。パスワードは生成された値をメモなどに残しましょう。検索エンジンでの表示はチェックをしインデックスされない設定を有効にしましょう。設定したらWordPressを押下**
-
-![wordpress-5](./images/step-1/wordpress-5.png "Wordpress5")
-
-----
-**成功したらログインを押下**
-
-![wordpress-6](./images/step-1/wordpress-6.png "Wordpress6")
-
-----
-**ここまでの設定が間違いないか、ユーザ、パスワードを設定しログインしましょう**
-
-![wordpress-7](./images/step-1/wordpress-7.png "Wordpress7")
-
-----
-**管理画面にログインできれば設定完了です**
-
-![wordpress-8](./images/step-1/wordpress-8.png "Wordpress8")
-
-----
-**「パブリックDNS(IPv4)」の値でブラウザを開きましょう。Wordpressのサイトが開けば設定完了です**
-
-![wordpress-9](./images/step-1/wordpress-9.png "Wordpress9")
-
-----
 
 **ここまでのオペレーションでStep1は完了です！**
