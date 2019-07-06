@@ -18,12 +18,12 @@ Step-3ではWebサーバとアプリケーションレイヤの水平分散、�
 ![multiaz-2](./images/step-3/multiaz-2.png "MULTIAZ2")
 
 ----
-**アベイラビリティゾーンはap-northeast-1cを選択、インターネットゲートウェイからのアクセスは抑止するためパブリックアクセス可能では"いいえ”を選択。暗号化を無効にするを選択**
+**アベイラビリティゾーンはus-east-1cを選択、インターネットゲートウェイからのアクセスは抑止するためパブリックアクセス可能では"いいえ”を選択。暗号化を無効にするを選択**
 
 ![multiaz-3-1](./images/step-3/multiaz-3-1.png "MULTIAZ3-1")
 
 ----
-**下にスクロールし、インスタンスの仕様は"db.t2.small"が選択されていること、設定でのDBインスタンス識別子では「wp-user05-slave」としましょう**
+**下にスクロールし、インスタンスの仕様は"db.t2.small"が選択されていること、設定でのDBインスタンス識別子では「db-user00-slave」としましょう**
 
 ![multiaz-3-2](./images/step-3/multiaz-3-2.png "MULTIAZ3-2")
 
@@ -66,10 +66,10 @@ $ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 
 **クラスタエンドポイントを使用してAuroraに接続しましょう。**
 
-**注意 wp-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自のクラスタエンドポイントに直すこと。パスワードはAurora作成時に設定した内容(この資料ではwordpressとなっています)を指定すること**
+**注意 wp-userXX-cluster.cluster-cenae7eyijpr.us-east-1.rds.amazonaws.comは各自のクラスタエンドポイントに直すこと。パスワードはAurora作成時に設定した内容(この資料ではwordpressとなっています)を指定すること**
 
 ```
-$ mysql -u admin -p -hwp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ mysql -u admin -p -hwp-user05-cluster.cluster-cenae7eyijpr.us-east-1.rds.amazonaws.com
 
 mysql> show databases;
 +--------------------+
@@ -100,7 +100,7 @@ Address: 10.0.2.226
 
 **読み込みエンドポイントを使用してAuroraに接続しましょう。**
 
-**注意 db-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自の読み込みエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
+**注意 db-userXX-cluster.cluster-ro-cenae7eyijpr.us-east-1.rds.amazonaws.comは各自の読み込みエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
 
 ```
 $ mysql -u admin -p -hdb-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
@@ -216,7 +216,7 @@ Address: 10.0.2.226
 ![create-ami-2](./images/step-3/create-ami-2.png "CREATE-AMI2")
 
 ----
-**イメージ名、イメージの説明ともに「wordpress ユーザ名」で設定、設定後イメージの作成ボタンを押下**
+**イメージ名、イメージの説明ともに「htc ユーザ名」で設定、設定後イメージの作成ボタンを押下**
 
 ![create-ami-3](./images/step-3/create-ami-3.png "CREATE-AMI3")
 
@@ -255,7 +255,7 @@ Address: 10.0.2.226
 |項目|設定値|
 |:-|:-|
 |ネットワーク|Step-1で作ったvpcを指定。vpc-userXX|
-|サブネット|パブリックサブネット ap-northeast-1c 10.0.1.0を指定|
+|サブネット|パブリックサブネット us-east-1c 10.0.1.0を指定|
 |自動割り当てパブリックIP|有効化|
 
 ![create-ec2-4](./images/step-3/create-ec2-4.png "CREATE-EC2-4")
@@ -316,7 +316,7 @@ Address: 10.0.2.226
 **作成した2台目のEC2サーバにログイン(Wordpressを表示したパブリックDNSを使用)しIPアドレス、ゲートウェイ、ネームサーバなどを確認しましょう**
 
 ```
-$ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXXX.ap-northeast-1.compute.amazonaws.com
+$ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXXX.us-east-1.compute.amazonaws.com
 
 $ ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
@@ -362,12 +362,12 @@ nameserver 10.0.0.2
 ![create-elb-3-1](./images/step-3/create-elb-3-1.png "CREATE-ELB-3-1")
 
 ----
-**Step-1で作成したVPCを選択するとアベイラビリティゾーンの選択ができます。ap-northeast-1c、ap-northeast-1dの両方にチェックし、表示されたパブリックサブネットを両方選択しましょう**
+**Step-1で作成したVPCを選択するとアベイラビリティゾーンの選択ができます。us-east-1c、us-east-1dの両方にチェックし、表示されたパブリックサブネットを両方選択しましょう**
 
 ![create-elb-3-2](./images/step-3/create-elb-3-2.png "CREATE-ELB-3-2")
 
 ----
-**ap-northeast-1c、ap-northeast-1dのパブリックサブネットが表示されていれば成功です。次の手順：セキュリティ設定の構成ボタンを押下**
+**us-east-1c、us-east-1dのパブリックサブネットが表示されていれば成功です。次の手順：セキュリティ設定の構成ボタンを押下**
 
 ![create-elb-3-3](./images/step-3/create-elb-3-3.png "CREATE-ELB-3-3")
 
@@ -421,22 +421,22 @@ nameserver 10.0.0.2
 ## セキュリティグループの変更
 **現在HTTPリクエストはインターネットゲートウェイを経由後ELB、各EC2インスタンスの全てが受け付けています。この設定をインターネットゲートウェイからELBを経由し各EC2インスタンスに振り分けられるようにし、合わせてEC2インスタンスへ直接HTTPアクセスは禁止するようセキュリティグループの変更をしましょう**
 
-**確認：パブリックDNSを確認(メモ)しブラウザでWordPressを開きましょう**
+**確認：パブリックDNSを確認(メモ)しブラウザで開きましょう**
 
 ![modify-security-group-1-1](./images/step-3/modify-security-group-1-1.png "MODIFY-SECURITY-GROUP-1-1")
 
 ----
-**確認：パブリックDNSを確認(メモ)しブラウザでWordPressを開きましょう**
+**確認：パブリックDNSを確認(メモ)しブラウザで開きましょう**
 
 ![modify-security-group-1-2](./images/step-3/modify-security-group-1-2.png "MODIFY-SECURITY-GROUP-1-2")
 
 ----
-**確認：DNS名を確認(メモ)しブラウザでWordPressを開きましょう**
+**確認：DNS名を確認(メモ)しブラウザで開きましょう**
 
 ![modify-security-group-1-3](./images/step-3/modify-security-group-1-3.png "MODIFY-SECURITY-GROUP-1-3")
 
 ----
-**現時点ではEC2インスタンス2台のパブリックDNS、ELB(ALB)のDNS名の全てでWordPressが表示(HTTPリクエストが通る)できるはずです。これをELB(ALB)のDNS名のみアクセス許可にします**
+**現時点ではEC2インスタンス2台のパブリックDNS、ELB(ALB)のDNS名の全てで表示(HTTPリクエストが通る)できるはずです。これをELB(ALB)のDNS名のみアクセス許可にします**
 
 ![modify-security-group-5](./images/step-3/modify-security-group-5.png "MODIFY-SECURITY-GROUP-5")
 

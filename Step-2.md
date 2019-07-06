@@ -174,7 +174,7 @@ $ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 
 **クラスタエンドポイントを使用してAuroraに接続しましょう。読み書きの権限についても確認しましょう。**
 
-**注意 wp-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自のクラスタエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
+**注意 wp-userXX-cluster.cluster-cenae7eyijpr.us-east-1.rds.amazonaws.comは各自のクラスタエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
 
 ```
 $ mysql -u admin -p -hdb-user00-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
@@ -208,7 +208,7 @@ Address: 10.0.2.226
 
 **読み込みエンドポイントを使用してAuroraに接続しましょう。読み書きの権限についても確認しましょう。**
 
-**注意 wp-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自の読み込みエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
+**注意 wp-userXX-cluster.cluster-ro-cenae7eyijpr.us-east-1.rds.amazonaws.comは各自の読み込みエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
 
 ```
 $ mysql -u admin -p -hwp-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
