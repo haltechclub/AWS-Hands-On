@@ -332,9 +332,43 @@ https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/ec2-lamp-amazon-linux-
 
 ## サンプルアプリを動かしてみる
 
-TODO! 
-gitからアプリをcloneしてきてテーブルとサンプルデータSQLを流し込む。  
-実際に動かしてみる！
+アプリをgitから落としてくる
+```bash
+$ sudo yum install git
+$ cd /var/www/html
+$ git clone https://github.com/haltechclub/tanabata.git
+$ cd tanabata
+$ mv * .[^\.]* ../
+$ cd ../
+$ rm -r tanabata
+$ mysql -uhtc -p htc < ./initdata/initial_data.sql
+$ cd api
+$ cp config.sample.php config.php
+$ nano config.php
+```
+
+DB接続用情報を編集
+```diff
+- define('HOST', '');
++ define('HOST', 'localhost');
+// MySQLのユーザー名
+- define('USER', '');
++ define('USER', 'htc');
+// MySQLのパスワード
+- define('PASSWORD', '');
++ define('PASSWORD', 'htc');
+```
+
+アプリ起動
+```
+cd ../app
+unzip dist.zip
+cd dist
+mv * .[^\.]* ../../
+cd ../../
+```
+
+URLにアクセスしてみる。
 
 ----
 
