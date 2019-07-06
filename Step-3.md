@@ -78,7 +78,7 @@ mysql> show databases;
 | information_schema |
 | mysql              |
 | performance_schema |
-| wordpress          |
+| htc                |
 +--------------------+
 4 rows in set (0.01 sec)
 
@@ -88,22 +88,22 @@ mysql> exit
 **続いてクラスタエンドポイントが存在するネットワークセグメントの確認をしましょう。10.0.2.XXXなら正しい設定です**
 
 ```
-$ nslookup wp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ nslookup db-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Server:     10.0.0.2
 Address:    10.0.0.2#53
 
 Non-authoritative answer:
-wp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com canonical name = wp-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
-Name:   wp-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+db-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com canonical name = db-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
+Name:   db-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Address: 10.0.2.226
 ```
 
 **読み込みエンドポイントを使用してAuroraに接続しましょう。**
 
-**注意 wp-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自の読み込みエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
+**注意 db-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自の読み込みエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
 
 ```
-$ mysql -u admin -p -hwp-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ mysql -u admin -p -hdb-userXX-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 
 mysql> show databases;
 +--------------------+
@@ -112,7 +112,7 @@ mysql> show databases;
 | information_schema |
 | mysql              |
 | performance_schema |
-| wordpress          |
+| htc                |
 +--------------------+
 4 rows in set (0.02 sec)
 
@@ -133,13 +133,13 @@ mysql> exit
 **続いて読み込みエンドポイントが存在するネットワークセグメントの確認をしましょう。10.0.3.XXXなら正しい設定です**
 
 ```
-$ nslookup wp-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ nslookup db-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Server:     10.0.0.2
 Address:    10.0.0.2#53
 
 Non-authoritative answer:
-wp-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com  canonical name = wp-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
-Name:   wp-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+db-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com  canonical name = db-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
+Name:   db-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Address: 10.0.3.217
 ```
 
@@ -180,26 +180,26 @@ $ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 **クラスタエンドポイントが存在するネットワークセグメントの確認をしましょう。10.0.3.XXXなら正しい設定です**
 
 ```
-$ nslookup wp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ nslookup db-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Server:     10.0.0.2
 Address:    10.0.0.2#53
 
 Non-authoritative answer:
-wp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com canonical name = wp-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
-Name:   wp-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+db-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com canonical name = db-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
+Name:   db-user05-slave.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Address: 10.0.3.217
 ```
 
 **読み込みエンドポイントが存在するネットワークセグメントの確認をしましょう。10.0.2.XXXなら正しい設定です**
 
 ```
-$ nslookup wp-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ nslookup db-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Server:     10.0.0.2
 Address:    10.0.0.2#53
 
 Non-authoritative answer:
-wp-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com  canonical name = wp-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
-Name:   wp-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+db-user05-cluster.cluster-ro-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com  canonical name = db-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
+Name:   db-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Address: 10.0.2.226
 ```
 
@@ -417,39 +417,6 @@ nameserver 10.0.0.2
 ![create-elb-11](./images/step-3/create-elb-11.png "CREATE-ELB-11")
 
 ----
-
-## Wordpressの設定変更
-**EC2サーバに接続しましょう(2台のうちどちらでも可) 。EC2からAuroraにクラスタエンドポイントで接続しoption_valueの更新を行いましょう。option_value変更後管理画面にログインするとoption_valueで指定したELBのDNS名でアクセスしていれば成功です。設定後確認しましょう**
-
-```
-$ mysql -u admin -p -hwp-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
-Enter password:
-
-mysql> use wordpress
-mysql> select option_value from wp_options where option_name = 'siteurl' or option_name = 'home';
-+--------------------------------------------------------------+
-| option_value                                                 |
-+--------------------------------------------------------------+
-| http://ec2-13-230-XX-73.ap-northeast-1.compute.amazonaws.com |
-| http://ec2-13-230-XX-73.ap-northeast-1.compute.amazonaws.com |
-+--------------------------------------------------------------+
-2 rows in set (0.00 sec)
-
-mysql> update wp_options set option_value='http://elb-userXX-1940738389.ap-northeast-1.elb.amazonaws.com' where option_name = 'siteurl' or option_name = 'home';
-Query OK, 2 rows affected (0.00 sec)
-Rows matched: 2  Changed: 2  Warnings: 0
-
-mysql> select option_value from wp_options where option_name = 'siteurl' or option_name = 'home';
-+---------------------------------------------------------------+
-| option_value                                                  |
-+---------------------------------------------------------------+
-| http://elb-userXX-1940738389.ap-northeast-1.elb.amazonaws.com |
-| http://elb-userXX-1940738389.ap-northeast-1.elb.amazonaws.com |
-+---------------------------------------------------------------+
-2 rows in set (0.00 sec)
-
-mysql>
-```
 
 ## セキュリティグループの変更
 **現在HTTPリクエストはインターネットゲートウェイを経由後ELB、各EC2インスタンスの全てが受け付けています。この設定をインターネットゲートウェイからELBを経由し各EC2インスタンスに振り分けられるようにし、合わせてEC2インスタンスへ直接HTTPアクセスは禁止するようセキュリティグループの変更をしましょう**

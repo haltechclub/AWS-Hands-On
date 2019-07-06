@@ -28,7 +28,7 @@ S3について調べてみましょう(5分)
 
 |項目|設定値|
 |:-|:-|
-|セキュリティグループ名|db-ユーザ名 (例 db-user05)|
+|セキュリティグループ名|db-ユーザ名 (例 db-user00)|
 |説明|RDS for Aurora|
 |VPC|作成したVPCを指定|
 
@@ -74,7 +74,7 @@ S3について調べてみましょう(5分)
 ----
 
 ## RDS Auroraインスタンスの作成
-**これまでの準備を踏まえ、10.0.2.0のプライベートネットワークにRDS Auroraインスタンスを作成しましょう。データベースタブからインスタンスの起動ボタンを押下**
+**これまでの準備を踏まえ、10.0.2.0のプライベートネットワークにRDS Auroraインスタンスを作成しましょう。データベースタブからデータベースの作成ボタンを押下**
 
 ![rds-1](./images/step-2/rds-1.png "RDS1")
 
@@ -90,9 +90,9 @@ S3について調べてみましょう(5分)
 |:-|:-|
 |DBインスタンスのクラス|db.t2.small|
 |マルチAZ配置|いいえ|
-|DBインスタンス識別子|wp-userXX XXは自身のID|
+|DBインスタンス識別子|db-userXX XXは自身のID|
 |マスターユーザの名前|admin|
-|マスターパスワード|wordpress|
+|マスターパスワード|htchtchtc|
 
 ![rds-3](./images/step-2/rds-3.png "RDS3")
 
@@ -104,7 +104,7 @@ S3について調べてみましょう(5分)
 |Virtual Private Cloud (VPC)|自分が作成したVPCを選択|
 |サブネットグループ|自分が作成したサブネットグループ「db subnet userXX」|
 |パブリックアクセシビリティ|いいえを選択|
-|アベイラビリティゾーン|ap-noatheast-1d|
+|アベイラビリティゾーン|ap-east-1d|
 |VPCセキュリティグループ|既存のVPCセキュリティグループの選択|
 |VPCセキュリティグループを選択|作成したDB用のセキュリティグループを指定、合わせてdefaultは削除|
 
@@ -116,7 +116,7 @@ S3について調べてみましょう(5分)
 |項目|設定値|
 |:-|:-|
 |DBクラスター識別子|設定しない|
-|データベースの名前|wordpress|
+|データベースの名前|htc|
 |データベースのポート|3306|
 |DBパラメータグループ|そのまま|
 |DBクラスターのパラメータグループ|そのまま|
@@ -177,7 +177,7 @@ $ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 **注意 wp-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.comは各自のクラスタエンドポイントに直すこと。パスワードはAurora作成時に設定した内容を指定すること**
 
 ```
-$ mysql -u admin -p -hwp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ mysql -u admin -p -hdb-user00-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 
 mysql> show databases;
 +--------------------+
@@ -186,7 +186,7 @@ mysql> show databases;
 | information_schema |
 | mysql              |
 | performance_schema |
-| wordpress          |
+| htc                |
 +--------------------+
 4 rows in set (0.00 sec)
 
@@ -196,13 +196,13 @@ mysql> exit
 **続いてネットワークセグメントの確認(クラスタエンドポイント)をしましょう**
 
 ```
-$ nslookup wp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+$ nslookup db-user00-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Server:     10.0.0.2
 Address:    10.0.0.2#53
 
 Non-authoritative answer:
-wp-user05-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com canonical name = wp-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
-Name:   wp-user05.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
+db-user00-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com canonical name = db-user00.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com.
+Name:   db-user00.cenae7eyijpr.ap-northeast-1.rds.amazonaws.com
 Address: 10.0.2.226
 ```
 
@@ -220,7 +220,7 @@ mysql> show databases;
 | information_schema |
 | mysql              |
 | performance_schema |
-| wordpress          |
+| htc                |
 +--------------------+
 4 rows in set (0.00 sec)
 
@@ -254,7 +254,7 @@ $ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 **mysqldumpを使いEC2インスタンスMySQLからデータバックアップ。パスワードは設定した内容を指定(wordpress)**
 
 ```
-$ mysqldump -u root -p wordpress > export.sql
+$ mysqldump -u root -p htc > export.sql
 Enter password:
 [ec2-user@ip-10-0-0-65 ~]$ ll
 合計 220
@@ -264,8 +264,8 @@ Enter password:
 **EC2インスタンスのMySQLは今後使用しないので停止し、自動起動の設定を抑止しましょう**
 
 ```
-$ sudo systemctl disable mysqld.service
-$ sudo systemctl stop mysqld.service
+$ sudo systemctl disable mariadb.service
+$ sudo systemctl stop mariadb.service
 ```
 
 **データベースのリストア**
@@ -273,41 +273,22 @@ $ sudo systemctl stop mysqld.service
 **Auroraのクラスタエンドポイントを指定してexport.sqlをリストアしましょう**
 
 ```
-mysql -u admin -p -hwp-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com  wordpress < export.sql
+mysql -u admin -p -hdb-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com  wordpress < export.sql
 Enter password:
 ```
 
-## WordpressのDB接続変更
+## DB接続変更
 
 ```
-$ sudo vi /var/www/html/wordpress/wp-config.php
-- define('DB_HOST', 'localhost');
-+ define('DB_HOST', 'wp-userXX-cluster.cluster-cenae7eyijpr.ap-northeast-1.rds.amazonaws.com');
+$ sudo nano /var/www/html/api/config.php
++ define('HOST','db-user00-cluster.cluster-cxqc1uzxewle.us-east-1.rds.amazonaws.com');
+// MySQLのユーザー名
++ define('USER', 'admin');
+// MySQLのパスワード
++ define('PASSWORD', 'htchtchtc');
 ```
 
-**ブラウザでWordpressサイトである、EC2インスタンスのパブリック DNS (IPv4)を開きましょう。データリストア前と同様にWordpressが表示されれば成功です。**
-
-## WordPressにプラグインの導入
-**S3を利用するためにWordPressにプラグインを導入しましょう。最初に「Amazon Web Services」で検索し、今すぐインストールボタンをクリックしましょう。**
-
-![plugin-1](./images/step-2/plugin-1.png "PLUGIN1")
-
-----
-**有効化をクリック**
-
-![plugin-2](./images/step-2/plugin-2.png "PLUGIN2")
-
-----
-**次に「WP Offload S3 Lite」を検索し今すぐインストールボタンをクリックしましょう**
-
-![plugin-3](./images/step-2/plugin-3.png "PLUGIN3")
-
-----
-**有効化をクリック**
-
-![plugin-4](./images/step-2/plugin-4.png "PLUGIN4")
-
-----
+**EC2インスタンスのパブリック DNS (IPv4)を開きましょう。データリストア前と同様に表示されれば成功です。**
 
 **EC2インスタンスにログイン(事前にログインしてる場合は割愛する)**
 
@@ -315,13 +296,28 @@ $ sudo vi /var/www/html/wordpress/wp-config.php
 $ ssh -i 1day-userXX.pem -o StrictHostKeyChecking=no ec2-user@ec2-XXXXXX.com
 [ec2-user@ip-10-0-0-65 ~]$
 ```
+**ここからアクセスキー、シークレットアクセスキー、トークンを取得します**
+キーの期限が一時間しか無いため試しに使ってみた後、こちらで用意したS3に切り替えます。
 
-**以下の2行(+は不要)を追記しましょう。アクセスキー、シークレットアクセスキーは事前に配布したものに書き換えましょう**
+右真ん中にあるAccount Detailボタンをクリック。
+![key-1](./images/step-2/key-1.png "key-1")
+AWS CLIの横にあるShowをクリック。
+![key-2](./images/step-2/key-2.png "key-2")
+表示されているのが接続に必要となるキーです。
+
+**以下の2行(+は不要)を追記しましょう。アクセスキー、シークレットアクセスキーは上で準備したものに書き換えましょう**
+```diff
+$ sudo nano /var/www/html/api/config.php
++ define( 'AWS_ACCESS_KEY_ID', '********************' );
++ define( 'AWS_SECRET_ACCESS_KEY', '********************************' );
++ define('AWS_SESSION_TOKEN', '********************************');
++ define('S3_BUCKET_NAME', 'htc-hands-on-01');
 ```
-$ sudo vi /var/www/html/wordpress/wp-config.php
-+ define( 'DBI_AWS_ACCESS_KEY_ID', '********************' );
-+ define( 'DBI_AWS_SECRET_ACCESS_KEY', '********************************' );
-```
+動作確認しましょう。  
+画像を投稿してみてS3に上がっていたら成功です。
+
+動作確認後、用意したS3キーをSlackに流しますので上記と同様に書き換えてください。  
+（こちらで用意したものにはAWS_SESSION_TOKENは不要）
 
 ----
 **S3の作成、サービスからS3を選択**
@@ -363,18 +359,6 @@ $ sudo vi /var/www/html/wordpress/wp-config.php
 **全てにチェックを入れ保存を押下**
 
 ![create-s3-8](./images/step-2/create-s3-8.png "CREATE-S3-8")
-
-----
-**Media Libraryタブを選択し、作成したS3バケット名を入力し、Save Bucketボタンを押下**
-
-![plugin-7](./images/step-2/plugin-7.png "PLUGIN7")
-
-----
-**適当な画像を使ってブログを新規投稿しましょう**
-
-**ブログの画像アドレスをコピーしS3のアドレスが指し示しているか確認しましょう**
-
-![plugin-8](./images/step-2/plugin-8.png "PLUGIN8")
 
 ----
 **ここまでのオペレーションでStep2は完了です！**
